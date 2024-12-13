@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .product img {
+            max-width: 100px;
+            height: auto;
+        }
+        .product button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product .add-to-fav {
+            background-color: green;
+            color: white;
+        }
+        .product .add-to-cart {
+            background-color: blue;
+            color: white;
+        }
+
+
+
+        #container{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap:10px
+
+        }
+        #container>div{
+            background-color: white;
+            margin:10px;
+            padding:20px;
+            height: 370px;
+            border-radius: 40px;
+            box-shadow: 5px 5px 2px grey;
+            font-family:cursive;
+            font-size: larger;
+            
+        }
+
+
+        .card img { 
+          /* width: 100%; height: auto;  */
+          height: 100px; /* Adjust the max-height as needed */ 
+          width: 100px;
+          
+        }
+        #btn{
+          border-radius: 50px;
+          /* width: 20px;
+          height: 10px; */
+          font-size: 30px;
+          /* margin: 150px; */
+          border: 2px solid black;
+          padding: 19px;
+         
+
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: rgb(154, 87, 160); font-family: cursive;"> Choose_U_R_Choice</h1>
+    <span onclick="openPage()" id="btn"><i class="fa-solid fa-cart-shopping"></i></span>
+    <span onclick="openfavpage()" id="btn"><i class="fa-solid fa-heart"></i></span> 
+    <br><br>
+    <div id="container"></div>
+    <script>
+        var parent = document.getElementById("container");
+        var emp = [];
+        var fav = [];
+
+        fetch('https://fakestoreapi.com/products')
+            .then((res) => res.json())
+            .then((data) => {
+                data.forEach((val) => {
+                    var child = document.createElement("div");
+                    child.className = "product";
+
+                    var childa = document.createElement("div");
+                    var childb = document.createElement("div");
+                    var childc = document.createElement("div");
+                    var childd = document.createElement("img");
+                    var favButton = document.createElement("button");
+                    var cartButton = document.createElement("button");
+
+                    childa.innerHTML = "Price: $" + val.price;
+                    childb.innerHTML = val.title;
+                    childc.innerHTML = "Category: " + val.category;
+                    childd.src = val.image;
+                    childd.alt = val.title;
+                    childa.style.color="red"
+                    childc.style.color="grey"
+
+    favButton.style.color="white"
+    favButton.style.fontFamily="cursive"
+    favButton.style.backgroundColor="green"
+    favButton.style.padding="2% 3%"
+    favButton.style.borderRadius="10px"
+
+    cartButton.style.color="white"
+    cartButton.style.fontFamily="cursive"
+    cartButton.style.backgroundColor="green"
+    cartButton.style.padding="2% 3%"
+    cartButton.style.borderRadius="10px"
+    cartButton.style.marginLeft="15px"
+
+                    favButton.innerHTML = "Add to Favourites";
+                    favButton.className = "add-to-fav";
+                    favButton.addEventListener("click", function() {
+                        fav.push(val);
+                        console.log(val)
+                        localStorage.setItem("FavDetails", JSON.stringify(fav));
+                    });
+
+                    cartButton.innerHTML = "Add to Cart";
+                    cartButton.className = "add-to-cart";
+                    cartButton.addEventListener("click", function() {
+                        emp.push(val);
+                        console.log(val)
+                        localStorage.setItem("CartDetails", JSON.stringify(emp));
+                    });
+
+     
+
+                    child.append(childd, childb, childa, childc, favButton, cartButton);
+                    parent.appendChild(child);
+                });
+            });
+
+
+function openPage() {
+ window.open("cart.html","_self")
+}
+
+function openfavpage() {
+ window.open("fav.html","_self")
+}
+    </script>
+</body>
+</html>
